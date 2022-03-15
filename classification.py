@@ -1,5 +1,6 @@
 # TODO: import libraries
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 df = pd.read_csv("Dry_Bean_Dataset.csv")
 
@@ -9,6 +10,18 @@ df = pd.read_csv("Dry_Bean_Dataset.csv")
 
 #TODO: perform feature scaling on the data (note: not necessary if we do
 #decision trees unless we're doing dimensionality reduction)
+
+''' Standardising the data'''
+X=df[df.columns[0:16]]
+y=df[['Class']]
+
+scaler = StandardScaler()
+x_std = scaler.fit_transform(X)
+
+print(x_std)
+
+
+
 
 #TODO: split data into training and testing (use cross validation?)
 
