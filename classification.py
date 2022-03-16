@@ -21,9 +21,11 @@ x_std = scaler.fit_transform(X)
 print(x_std)
 
 
-
-
 #TODO: split data into training and testing (use cross validation?)
+# currently, the test size is 30% of the total data within the dataset, 
+# we can test more of the dataset later on, if needed.
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)
+
 
 #TODO: determine if we need to use all of the features, or if omitting any
 #leads to higher accuracy
