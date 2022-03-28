@@ -1,6 +1,9 @@
 # TODO: import libraries
 import pandas as pd
 import numpy as np
+
+import matplotlib.pyplot as plt                        # inserted for when we begin to plot the results of the classifiers
+
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
@@ -9,6 +12,10 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.model_selection import StratifiedKFold
+
+# Camika placed these here
+from sklearn.tree import DecisionTreeClassifier
+from sklearn import tree
 
 df = pd.read_csv("Dry_Bean_Dataset.csv")
 
@@ -60,3 +67,30 @@ print(f"Recall (Kernel SVM): {recall_score(y_pred, y_test, average='weighted')}"
 
 #TODO: Obtain performance metrics (runtime, accuracy, precision, recall, f1, etc.)
 #for each model, make comparisons
+
+# creating Decision Tree Classifier object with the default criteria set to gini to measure the quality of each split
+# and impurity. max depth could be set to None to explore all possible values, but let's keep it at 4 for simplicity
+dtc = DecisionTreeClassifier(criterion = 'gini', max_depth = 4, random_state = 1)
+
+# training and plotting the Decision Tree Classifier
+print("-------")
+print("\nDecision Tree Classifier for the Dataset (Depth = 4):")
+dtc.fit(X_train, y_train)
+tree.plot_tree(dtc)
+plt.show()
+
+# predictions for the decision tree classifier
+y_pred = dtc.predict(x_test_std)
+
+# printing the accuracy score for Decision Tree Classifier using score method
+print('-------')
+print('Accuracy of Decision Tree Classifier (Score Method): %.2f' % dtc.score(x_test_std, y_test))
+
+# currently, there's an undefined metric warning stating that we should add 'zero_division' parameter to control the behavior
+# this is unavoidable since the classifier may not differentiate between true and false positives
+# setting zero_division to 1 or 0 will produce the same results (based on observation)
+print("Accuracy (Decision Tree):",accuracy_score(y_pred, y_test))
+print("Precision (Decision Tree):",precision_score(y_pred, y_test, average = 'weighted', zero_division = 1))
+print("f1 (Decision Tree):", f1_score(y_pred, y_test, average='weighted', zero_division = 1))
+print("Recall (Decision Tree):",recall_score(y_pred, y_test, average='weighted', zero_division = 1))
+
