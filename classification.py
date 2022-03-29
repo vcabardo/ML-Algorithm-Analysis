@@ -12,6 +12,7 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.model_selection import StratifiedKFold
+from sklearn.ensemble import RandomForestClassifier
 
 # Camika placed these here
 from sklearn.tree import DecisionTreeClassifier
@@ -47,10 +48,10 @@ svm.fit(x_train_std, np.ravel(y_train))
 y_pred = svm.predict(x_test_std)
 
 print("-------")
-print(f"Accuracy (Kernel SVM): {accuracy_score(y_pred, y_test)}")
-print(f"Precision (Kernel SVM): {precision_score(y_pred, y_test, average='weighted')}")
-print(f"f1 (Kernel SVM): {f1_score(y_pred, y_test, average='weighted')}")
-print(f"Recall (Kernel SVM): {recall_score(y_pred, y_test, average='weighted')}")
+print(f"Accuracy (Linear SVM): {accuracy_score(y_pred, y_test)}")
+print(f"Precision (Linear  SVM): {precision_score(y_pred, y_test, average='weighted')}")
+print(f"f1 (Linear SVM): {f1_score(y_pred, y_test, average='weighted')}")
+print(f"Recall (Linear SVM): {recall_score(y_pred, y_test, average='weighted')}")
 
 svm = SVC(kernel='rbf', C=0.01, random_state=1)
 svm.fit(x_train_std, np.ravel(y_train))
@@ -80,11 +81,11 @@ tree.plot_tree(dtc)
 plt.show()
 
 # predictions for the decision tree classifier
-y_pred = dtc.predict(x_test_std)
+y_pred = dtc.predict(X_test)
 
 # printing the accuracy score for Decision Tree Classifier using score method
 print('-------')
-print('Accuracy of Decision Tree Classifier (Score Method): %.2f' % dtc.score(x_test_std, y_test))
+print('Accuracy of Decision Tree Classifier (Score Method): %.2f' % dtc.score(X_test, y_test))
 
 # currently, there's an undefined metric warning stating that we should add 'zero_division' parameter to control the behavior
 # this is unavoidable since the classifier may not differentiate between true and false positives
@@ -94,3 +95,23 @@ print("Precision (Decision Tree):",precision_score(y_pred, y_test, average = 'we
 print("f1 (Decision Tree):", f1_score(y_pred, y_test, average='weighted', zero_division = 1))
 print("Recall (Decision Tree):",recall_score(y_pred, y_test, average='weighted', zero_division = 1))
 
+
+#Implementing Random Forest Classifier
+clf=RandomForestClassifier(n_estimators=500,criterion='gini')
+clf.fit(x_train_std,np.ravel(y_train))#throwing a warning that it is expecting i d array so i used np.ravel()
+y_pred_test=clf.predict(x_test_std)
+y_pred_train = clf.predict(x_train_std)
+
+print('-------')
+#Model evaluation for testing data
+print("Accuracy for training data {Random Forest Classifier}:",accuracy_score(y_train, y_pred_train))
+print("Precision score for training{Random Forest classifier}:",precision_score(y_train, y_pred_train, average='micro'))
+print("Recall score for training{Random Forest classifier}:",recall_score(y_train, y_pred_train, average='weighted'))
+print("Precision score for training{Random Forest classifier}:",f1_score(y_train, y_pred_train, average='micro'))
+
+print('-------')
+#Model evaluation for testing data
+print("Accuracy for testing data{Random Forest Classifier}:",accuracy_score(y_test, y_pred_test))
+print("Precision score for testing data {Random Forest classifier}:",precision_score(y_test, y_pred_test, average='micro'))
+print("Recall score for testing data{Random Forest classifier}:",recall_score(y_test, y_pred_test, average='weighted'))
+print("Precision score for testing data{Random Forest classifier}:",f1_score(y_test, y_pred_test, average='micro'))
