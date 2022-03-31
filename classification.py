@@ -13,6 +13,7 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.ensemble import RandomForestClassifier
+from timeit import default_timer as timer
 
 # Camika placed these here
 from sklearn.tree import DecisionTreeClassifier
@@ -43,7 +44,10 @@ x_test_std = scaler.fit_transform(X_test)
 
 #TODO: train the model (SVM? DT? MLP? Multiple models?)
 svm = SVC(kernel='linear', C=0.01, random_state=1)
+
+start = timer()
 svm.fit(x_train_std, np.ravel(y_train))
+end = timer()
 
 y_pred = svm.predict(x_test_std)
 
@@ -52,9 +56,13 @@ print(f"Accuracy (Linear SVM): {accuracy_score(y_pred, y_test)}")
 print(f"Precision (Linear  SVM): {precision_score(y_pred, y_test, average='weighted')}")
 print(f"f1 (Linear SVM): {f1_score(y_pred, y_test, average='weighted')}")
 print(f"Recall (Linear SVM): {recall_score(y_pred, y_test, average='weighted')}")
+print(f"Runtime (Linear SVM): {end - start}")
 
 svm = SVC(kernel='rbf', C=0.01, random_state=1)
+
+start = timer()
 svm.fit(x_train_std, np.ravel(y_train))
+end = timer()
 
 y_pred = svm.predict(x_test_std)
 
@@ -63,6 +71,7 @@ print(f"Accuracy (Kernel SVM): {accuracy_score(y_pred, y_test)}")
 print(f"Precision (Kernel SVM): {precision_score(y_pred, y_test, average='weighted')}")
 print(f"f1 (Kernel SVM): {f1_score(y_pred, y_test, average='weighted')}")
 print(f"Recall (Kernel SVM): {recall_score(y_pred, y_test, average='weighted')}")
+print(f"Runtime (Kernel SVM): {end - start}")
 
 #TODO: use the model to make predictions
 
@@ -76,7 +85,11 @@ dtc = DecisionTreeClassifier(criterion = 'gini', max_depth = 4, random_state = 1
 # training and plotting the Decision Tree Classifier
 print("-------")
 print("\nDecision Tree Classifier for the Dataset (Depth = 4):")
+
+start = timer()
 dtc.fit(X_train, y_train)
+end = timer()
+
 tree.plot_tree(dtc)
 plt.show()
 
@@ -94,11 +107,16 @@ print("Accuracy (Decision Tree):",accuracy_score(y_pred, y_test))
 print("Precision (Decision Tree):",precision_score(y_pred, y_test, average = 'weighted', zero_division = 1))
 print("f1 (Decision Tree):", f1_score(y_pred, y_test, average='weighted', zero_division = 1))
 print("Recall (Decision Tree):",recall_score(y_pred, y_test, average='weighted', zero_division = 1))
+print(f"Runtime (Decision Tree): {end - start}")
 
 
 #Implementing Random Forest Classifier
 clf=RandomForestClassifier(n_estimators=500,criterion='gini')
+
+start = timer()
 clf.fit(x_train_std,np.ravel(y_train))#throwing a warning that it is expecting i d array so i used np.ravel()
+end = timer()
+
 y_pred_test=clf.predict(x_test_std)
 y_pred_train = clf.predict(x_train_std)
 
@@ -108,6 +126,7 @@ print("Accuracy for training data {Random Forest Classifier}:",accuracy_score(y_
 print("Precision score for training{Random Forest classifier}:",precision_score(y_train, y_pred_train, average='micro'))
 print("Recall score for training{Random Forest classifier}:",recall_score(y_train, y_pred_train, average='weighted'))
 print("Precision score for training{Random Forest classifier}:",f1_score(y_train, y_pred_train, average='micro'))
+print(f"Runtime (Random Forest Classifier - training): {end - start}")
 
 print('-------')
 #Model evaluation for testing data
@@ -115,3 +134,4 @@ print("Accuracy for testing data{Random Forest Classifier}:",accuracy_score(y_te
 print("Precision score for testing data {Random Forest classifier}:",precision_score(y_test, y_pred_test, average='micro'))
 print("Recall score for testing data{Random Forest classifier}:",recall_score(y_test, y_pred_test, average='weighted'))
 print("Precision score for testing data{Random Forest classifier}:",f1_score(y_test, y_pred_test, average='micro'))
+print(f"Runtime (Random Forest Classifier - testing): {end - start}")
