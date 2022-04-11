@@ -19,6 +19,15 @@ This project contains multiple files:
 2. validation_curves.py - Used to assist in hyperparameter tuning for the machine learning models that are implemented in classification.py
 3. classification_tool.py - The actual implementation of our solution to the project. Provides a user interface for users to enter data about a bean and returns a prediction as to what type of bean they entered.
 
+This project is structured as follows:
+```bash
+.
+├── Dry_Bean_Dataset.csv
+├── README.md
+├── classification.py
+└── validation_curves.py
+```
+
 ## Dataset
 The dataset used for this project can be found on the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Dry+Bean+Dataset):
 
