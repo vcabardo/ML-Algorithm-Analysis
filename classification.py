@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt                        # inserted for when we be
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
