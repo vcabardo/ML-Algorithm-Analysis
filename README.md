@@ -17,7 +17,6 @@ This project contains multiple files:
 
 1. classification.py - Implements multiple sklearn classifiers and obtains certain performance metrics on them (accuracy, precision, recall, f1, and runtime)
 2. validation_curves.py - Used to assist in hyperparameter tuning for the machine learning models that are implemented in classification.py
-3. classification_tool.py - The actual implementation of our solution to the project. Provides a user interface for users to enter data about a bean and returns a prediction as to what type of bean they entered.
 
 This project is structured as follows:
 ```bash
@@ -69,10 +68,4 @@ python3 classification.py
 
 ```bash
 python3 validation_curves.py
-```
-
-#### Run the following command to view the interface that we provide as a solution for this problem:
-
-```bash
-python3 classification_tool.py
 ```
