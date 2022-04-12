@@ -13,6 +13,8 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.ensemble import RandomForestClassifier
 from timeit import default_timer as timer
 from pylab import rcParams
+from sklearn import model_selection
+from sklearn.model_selection import cross_val_score
 
 # Camika placed these here
 from sklearn.tree import DecisionTreeClassifier
@@ -42,6 +44,7 @@ x_test_std = scaler.fit_transform(X_test)
 #leads to higher accuracy
 
 #TODO: train the model (SVM? DT? MLP? Multiple models?)
+
 svm = SVC(kernel='linear', C=0.01, random_state=1)
 
 start = timer()
@@ -136,6 +139,7 @@ print(f"Runtime (Decision Tree): {end - start}")
 
 
 #Implementing Random Forest Classifier
+
 clf=RandomForestClassifier(n_estimators=500,criterion='gini')
 
 start = timer()
@@ -146,12 +150,14 @@ y_pred_test=clf.predict(x_test_std)
 y_pred_train = clf.predict(x_train_std)
 
 print('-------')
-#Model evaluation for testing data
+#Model evaluation for training data
 print("Accuracy for training data {Random Forest Classifier}:",accuracy_score(y_train, y_pred_train))
 print("Precision score for training{Random Forest classifier}:",precision_score(y_train, y_pred_train, average='micro'))
 print("Recall score for training{Random Forest classifier}:",recall_score(y_train, y_pred_train, average='weighted'))
 print("Precision score for training{Random Forest classifier}:",f1_score(y_train, y_pred_train, average='micro'))
 print(f"Runtime (Random Forest Classifier - training): {end - start}")
+
+
 
 print('-------')
 #Model evaluation for testing data
@@ -161,6 +167,18 @@ print("Recall score for testing data{Random Forest classifier}:",recall_score(y_
 print("Precision score for testing data{Random Forest classifier}:",f1_score(y_test, y_pred_test, average='micro'))
 print(f"Runtime (Random Forest Classifier - testing): {end - start}")
 
+
+report = classification_report(y_test, y_pred_test, output_dict=True, target_names=pd.unique(np.ravel(df[['Class']])))
+
+precisions_rfc = []
+recalls_rfc = []
+f1s_rfc = []
+
+for k in report:
+  if k != 'accuracy':
+    precisions_rfc.append(report[k]['precision'])
+    recalls_rfc.append(report[k]['recall'])
+    f1s_rfc.append(report[k]['f1-score'])
 
 #https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
 X = np.arange(9)
@@ -194,3 +212,18 @@ plt.ylabel('Classification Rate (%)')
 plt.xlabel('Class')
 rcParams['figure.figsize'] = 7, 7
 plt.show()
+
+
+#Classification report fraph for randome tree classifier
+
+X = np.arange(9)
+plt.bar(X + 0.00, precisions_rfc, color = 'r', width = 0.25)
+plt.bar(X + 0.25, recalls_rfc, color = 'b', width = 0.25)
+plt.bar(X + 0.50, f1s_rfc, color = 'g', width = 0.25)
+plt.xticks(X, classes)
+plt.legend(labels=['precision', 'recall','f1_score'])
+plt.ylabel('Classification Rate (%)')
+plt.xlabel('Class')
+rcParams['figure.figsize'] = 7, 7
+plt.show()
+
