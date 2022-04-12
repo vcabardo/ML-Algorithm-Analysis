@@ -2,19 +2,17 @@
 import pandas as pd
 import numpy as np
 
-import matplotlib.pyplot as plt                        # inserted for when we begin to plot the results of the classifiers
+import matplotlib.pyplot as plt # inserted for when we begin to plot the results of the classifiers
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report
 from sklearn.model_selection import StratifiedKFold
 from sklearn.ensemble import RandomForestClassifier
 from timeit import default_timer as timer
+from pylab import rcParams
 
 # Camika placed these here
 from sklearn.tree import DecisionTreeClassifier
@@ -59,6 +57,19 @@ print(f"f1 (Linear SVM): {f1_score(y_pred, y_test, average='weighted')}")
 print(f"Recall (Linear SVM): {recall_score(y_pred, y_test, average='weighted')}")
 print(f"Runtime (Linear SVM): {end - start}")
 
+report = classification_report(y_test, y_pred, output_dict=True, target_names=pd.unique(np.ravel(df[['Class']])))
+
+precisions_linearsvm = []
+recalls_linearsvm  = []
+f1s_linearsvm  = []
+classes = ["SEKER", "BARBUNYA", "BOMBAY", "CALI", "HOROZ", "SIRA", "DERMASON", "Macro Average", "Weighted Average"]
+
+for k in report:
+  if k != 'accuracy':
+    precisions_linearsvm.append(report[k]['precision'])
+    recalls_linearsvm.append(report[k]['recall'])
+    f1s_linearsvm.append(report[k]['f1-score'])
+
 svm = SVC(kernel='rbf', C=0.01, random_state=1)
 
 start = timer()
@@ -73,6 +84,19 @@ print(f"Precision (Kernel SVM): {precision_score(y_pred, y_test, average='weight
 print(f"f1 (Kernel SVM): {f1_score(y_pred, y_test, average='weighted')}")
 print(f"Recall (Kernel SVM): {recall_score(y_pred, y_test, average='weighted')}")
 print(f"Runtime (Kernel SVM): {end - start}")
+
+report = classification_report(y_test, y_pred, output_dict=True, target_names=pd.unique(np.ravel(df[['Class']])))
+
+precisions_kernelsvm = []
+recalls_kernelsvm = []
+f1s_kernelsvm = []
+
+for k in report:
+  if k != 'accuracy':
+    precisions_kernelsvm.append(report[k]['precision'])
+    recalls_kernelsvm.append(report[k]['recall'])
+    f1s_kernelsvm.append(report[k]['f1-score'])
+
 
 #TODO: use the model to make predictions
 
@@ -136,3 +160,37 @@ print("Precision score for testing data {Random Forest classifier}:",precision_s
 print("Recall score for testing data{Random Forest classifier}:",recall_score(y_test, y_pred_test, average='weighted'))
 print("Precision score for testing data{Random Forest classifier}:",f1_score(y_test, y_pred_test, average='micro'))
 print(f"Runtime (Random Forest Classifier - testing): {end - start}")
+
+
+#https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
+X = np.arange(9)
+plt.bar(X + 0.00, precisions_linearsvm, color = 'r', width = 0.25)
+plt.bar(X + 0.25, precisions_kernelsvm, color = 'b', width = 0.25)
+plt.xticks(X, classes)
+plt.legend(labels=['Linear SVM', 'Kernel SVM'])
+plt.ylabel('Classification Rate (%)')
+plt.xlabel('Class')
+rcParams['figure.figsize'] = 7, 7
+plt.show()
+
+#https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
+X = np.arange(9)
+plt.bar(X + 0.00, recalls_linearsvm, color = 'r', width = 0.25)
+plt.bar(X + 0.25, recalls_kernelsvm, color = 'b', width = 0.25)
+plt.xticks(X, classes)
+plt.legend(labels=['Linear SVM', 'Kernel SVM'])
+plt.ylabel('Classification Rate (%)')
+plt.xlabel('Class')
+rcParams['figure.figsize'] = 7, 7
+plt.show()
+
+#https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
+X = np.arange(9)
+plt.bar(X + 0.00, f1s_linearsvm, color = 'r', width = 0.25)
+plt.bar(X + 0.25, f1s_kernelsvm, color = 'b', width = 0.25)
+plt.xticks(X, classes)
+plt.legend(labels=['Linear SVM', 'Kernel SVM'])
+plt.ylabel('Classification Rate (%)')
+plt.xlabel('Class')
+rcParams['figure.figsize'] = 7, 7
+plt.show()
