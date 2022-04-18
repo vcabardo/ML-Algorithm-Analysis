@@ -137,6 +137,19 @@ print("f1 (Decision Tree):", f1_score(y_pred, y_test, average='weighted', zero_d
 print("Recall (Decision Tree):",recall_score(y_pred, y_test, average='weighted', zero_division = 1))
 print(f"Runtime (Decision Tree): {end - start}")
 
+report = classification_report(y_test, y_pred, output_dict=True, target_names=pd.unique(np.ravel(df[['Class']])))
+
+precisions_decision = []
+recalls_decision  = []
+f1s_decision = []
+classes = ["SEKER", "BARBUNYA", "BOMBAY", "CALI", "HOROZ", "SIRA", "DERMASON", "Macro Average", "Weighted Average"]
+
+for k in report:
+  if k != 'accuracy':
+    precisions_decision.append(report[k]['precision'])
+    recalls_decision.append(report[k]['recall'])
+    f1s_decision.append(report[k]['f1-score'])
+
 
 #Implementing Random Forest Classifier
 
@@ -185,11 +198,13 @@ X = np.arange(9)
 plt.bar(X + 0.00, precisions_linearsvm, color = 'r', width = 0.25)
 plt.bar(X + 0.25, precisions_kernelsvm, color = 'b', width = 0.25)
 plt.bar(X + 0.50, precisions_rfc, color = 'g', width = 0.25)
+plt.bar(X + 0.75, precisions_decision, color = 'y', width = 0.25)
 plt.xticks(X, classes)
-plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier'])
+plt.title('Report: Precision Scores')
+plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier', 'Decision Tree'])
 plt.ylabel('Classification Rate (%)')
 plt.xlabel('Class')
-rcParams['figure.figsize'] = 7, 7
+rcParams['figure.figsize'] = 15, 15
 plt.show()
 
 #https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
@@ -197,11 +212,13 @@ X = np.arange(9)
 plt.bar(X + 0.00, recalls_linearsvm, color = 'r', width = 0.25)
 plt.bar(X + 0.25, recalls_kernelsvm, color = 'b', width = 0.25)
 plt.bar(X + 0.50, recalls_rfc, color = 'g', width = 0.25)
+plt.bar(X + 0.75, recalls_decision, color = 'y', width = 0.25)
 plt.xticks(X, classes)
-plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier'])
+plt.title('Report: Recall Scores')
+plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier', 'Decision Tree'])
 plt.ylabel('Classification Rate (%)')
 plt.xlabel('Class')
-rcParams['figure.figsize'] = 7, 7
+rcParams['figure.figsize'] = 15, 15
 plt.show()
 
 #https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
@@ -209,9 +226,24 @@ X = np.arange(9)
 plt.bar(X + 0.00, f1s_linearsvm, color = 'r', width = 0.25)
 plt.bar(X + 0.25, f1s_kernelsvm, color = 'b', width = 0.25)
 plt.bar(X + 0.50, f1s_rfc, color = 'g', width = 0.25)
+plt.bar(X + 0.75, f1s_decision, color = 'y', width = 0.25)
 plt.xticks(X, classes)
-plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier'])
+plt.title('Report: F1 Scores')
+plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier', 'Decision Tree'])
 plt.ylabel('Classification Rate (%)')
 plt.xlabel('Class')
-rcParams['figure.figsize'] = 7, 7
+rcParams['figure.figsize'] = 15, 15
+plt.show()
+
+# Classification report fraph for decision tree
+X = np.arange(9)
+plt.bar(X + 0.00, precisions_decision, color = 'r', width = 0.25)
+plt.bar(X + 0.25, recalls_decision, color = 'b', width = 0.25)
+plt.bar(X + 0.50, f1s_decision, color = 'g', width = 0.25)
+plt.xticks(X, classes)
+plt.title('Classification Report: Decision Tree')
+plt.legend(labels=['precision', 'recall','f1_score'])
+plt.ylabel('Classification Rate (%)')
+plt.xlabel('Class (Decision Tree)')
+rcParams['figure.figsize'] = 15, 15
 plt.show()
