@@ -184,8 +184,9 @@ for k in report:
 X = np.arange(9)
 plt.bar(X + 0.00, precisions_linearsvm, color = 'r', width = 0.25)
 plt.bar(X + 0.25, precisions_kernelsvm, color = 'b', width = 0.25)
+plt.bar(X + 0.50, precisions_rfc, color = 'g', width = 0.25)
 plt.xticks(X, classes)
-plt.legend(labels=['Linear SVM', 'Kernel SVM'])
+plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier'])
 plt.ylabel('Classification Rate (%)')
 plt.xlabel('Class')
 rcParams['figure.figsize'] = 7, 7
@@ -195,8 +196,9 @@ plt.show()
 X = np.arange(9)
 plt.bar(X + 0.00, recalls_linearsvm, color = 'r', width = 0.25)
 plt.bar(X + 0.25, recalls_kernelsvm, color = 'b', width = 0.25)
+plt.bar(X + 0.50, recalls_rfc, color = 'g', width = 0.25)
 plt.xticks(X, classes)
-plt.legend(labels=['Linear SVM', 'Kernel SVM'])
+plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier'])
 plt.ylabel('Classification Rate (%)')
 plt.xlabel('Class')
 rcParams['figure.figsize'] = 7, 7
@@ -206,24 +208,10 @@ plt.show()
 X = np.arange(9)
 plt.bar(X + 0.00, f1s_linearsvm, color = 'r', width = 0.25)
 plt.bar(X + 0.25, f1s_kernelsvm, color = 'b', width = 0.25)
-plt.xticks(X, classes)
-plt.legend(labels=['Linear SVM', 'Kernel SVM'])
-plt.ylabel('Classification Rate (%)')
-plt.xlabel('Class')
-rcParams['figure.figsize'] = 7, 7
-plt.show()
-
-
-#Classification report fraph for randome tree classifier
-
-X = np.arange(9)
-plt.bar(X + 0.00, precisions_rfc, color = 'r', width = 0.25)
-plt.bar(X + 0.25, recalls_rfc, color = 'b', width = 0.25)
 plt.bar(X + 0.50, f1s_rfc, color = 'g', width = 0.25)
 plt.xticks(X, classes)
-plt.legend(labels=['precision', 'recall','f1_score'])
+plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier'])
 plt.ylabel('Classification Rate (%)')
 plt.xlabel('Class')
 rcParams['figure.figsize'] = 7, 7
 plt.show()
-
