@@ -20,6 +20,9 @@ from sklearn.model_selection import cross_val_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import tree
 
+accuracies = []
+runtimes = []
+
 df = pd.read_csv("Dry_Bean_Dataset.csv")
 
 #TODO: check for null values in dataset. if that is the case, average values in
@@ -53,12 +56,12 @@ end = timer()
 
 y_pred = svm.predict(x_test_std)
 
-print("-------")
-print(f"Accuracy (Linear SVM): {accuracy_score(y_pred, y_test)}")
-print(f"Precision (Linear  SVM): {precision_score(y_pred, y_test, average='weighted')}")
-print(f"f1 (Linear SVM): {f1_score(y_pred, y_test, average='weighted')}")
-print(f"Recall (Linear SVM): {recall_score(y_pred, y_test, average='weighted')}")
-print(f"Runtime (Linear SVM): {end - start}")
+# print("-------")
+# print(f"Accuracy (Linear SVM): {accuracy_score(y_pred, y_test)}")
+# print(f"Precision (Linear  SVM): {precision_score(y_pred, y_test, average='weighted')}")
+# print(f"f1 (Linear SVM): {f1_score(y_pred, y_test, average='weighted')}")
+# print(f"Recall (Linear SVM): {recall_score(y_pred, y_test, average='weighted')}")
+# print(f"Runtime (Linear SVM): {end - start}")
 
 report = classification_report(y_test, y_pred, output_dict=True, target_names=pd.unique(np.ravel(df[['Class']])))
 
@@ -73,6 +76,9 @@ for k in report:
     recalls_linearsvm.append(report[k]['recall'])
     f1s_linearsvm.append(report[k]['f1-score'])
 
+accuracies.append(accuracy_score(y_pred, y_test))
+runtimes.append(end - start)
+
 svm = SVC(kernel='rbf', C=0.01, random_state=1)
 
 start = timer()
@@ -81,12 +87,12 @@ end = timer()
 
 y_pred = svm.predict(x_test_std)
 
-print("-------")
-print(f"Accuracy (Kernel SVM): {accuracy_score(y_pred, y_test)}")
-print(f"Precision (Kernel SVM): {precision_score(y_pred, y_test, average='weighted')}")
-print(f"f1 (Kernel SVM): {f1_score(y_pred, y_test, average='weighted')}")
-print(f"Recall (Kernel SVM): {recall_score(y_pred, y_test, average='weighted')}")
-print(f"Runtime (Kernel SVM): {end - start}")
+# print("-------")
+# print(f"Accuracy (Kernel SVM): {accuracy_score(y_pred, y_test)}")
+# print(f"Precision (Kernel SVM): {precision_score(y_pred, y_test, average='weighted')}")
+# print(f"f1 (Kernel SVM): {f1_score(y_pred, y_test, average='weighted')}")
+# print(f"Recall (Kernel SVM): {recall_score(y_pred, y_test, average='weighted')}")
+# print(f"Runtime (Kernel SVM): {end - start}")
 
 report = classification_report(y_test, y_pred, output_dict=True, target_names=pd.unique(np.ravel(df[['Class']])))
 
@@ -100,6 +106,8 @@ for k in report:
     recalls_kernelsvm.append(report[k]['recall'])
     f1s_kernelsvm.append(report[k]['f1-score'])
 
+accuracies.append(accuracy_score(y_pred, y_test))
+runtimes.append(end - start)
 
 #TODO: use the model to make predictions
 
@@ -108,34 +116,34 @@ for k in report:
 
 # creating Decision Tree Classifier object with the default criteria set to gini to measure the quality of each split
 # and impurity. max depth could be set to None to explore all possible values, but let's keep it at 4 for simplicity
-dtc = DecisionTreeClassifier(criterion = 'gini', max_depth = 4, random_state = 1)
+dtc = DecisionTreeClassifier(criterion = 'gini', max_depth = 8, random_state = 1)
 
 # training and plotting the Decision Tree Classifier
-print("-------")
-print("\nDecision Tree Classifier for the Dataset (Depth = 4):")
+# print("-------")
+# print("\nDecision Tree Classifier for the Dataset (Depth = 4):")
 
 start = timer()
 dtc.fit(X_train, y_train)
 end = timer()
 
-tree.plot_tree(dtc)
-plt.show()
+# tree.plot_tree(dtc)
+# plt.show()
 
 # predictions for the decision tree classifier
 y_pred = dtc.predict(X_test)
 
-# printing the accuracy score for Decision Tree Classifier using score method
-print('-------')
-print('Accuracy of Decision Tree Classifier (Score Method): %.2f' % dtc.score(X_test, y_test))
+# # printing the accuracy score for Decision Tree Classifier using score method
+# print('-------')
+# print('Accuracy of Decision Tree Classifier (Score Method): %.2f' % dtc.score(X_test, y_test))
 
-# currently, there's an undefined metric warning stating that we should add 'zero_division' parameter to control the behavior
-# this is unavoidable since the classifier may not differentiate between true and false positives
-# setting zero_division to 1 or 0 will produce the same results (based on observation)
-print("Accuracy (Decision Tree):",accuracy_score(y_pred, y_test))
-print("Precision (Decision Tree):",precision_score(y_pred, y_test, average = 'weighted', zero_division = 1))
-print("f1 (Decision Tree):", f1_score(y_pred, y_test, average='weighted', zero_division = 1))
-print("Recall (Decision Tree):",recall_score(y_pred, y_test, average='weighted', zero_division = 1))
-print(f"Runtime (Decision Tree): {end - start}")
+# # currently, there's an undefined metric warning stating that we should add 'zero_division' parameter to control the behavior
+# # this is unavoidable since the classifier may not differentiate between true and false positives
+# # setting zero_division to 1 or 0 will produce the same results (based on observation)
+# print("Accuracy (Decision Tree):",accuracy_score(y_pred, y_test))
+# print("Precision (Decision Tree):",precision_score(y_pred, y_test, average = 'weighted', zero_division = 1))
+# print("f1 (Decision Tree):", f1_score(y_pred, y_test, average='weighted', zero_division = 1))
+# print("Recall (Decision Tree):",recall_score(y_pred, y_test, average='weighted', zero_division = 1))
+# print(f"Runtime (Decision Tree): {end - start}")
 
 report = classification_report(y_test, y_pred, output_dict=True, target_names=pd.unique(np.ravel(df[['Class']])))
 
@@ -150,6 +158,8 @@ for k in report:
     recalls_decision.append(report[k]['recall'])
     f1s_decision.append(report[k]['f1-score'])
 
+accuracies.append(accuracy_score(y_pred, y_pred))
+runtimes.append(end - start)
 
 #Implementing Random Forest Classifier
 
@@ -162,23 +172,23 @@ end = timer()
 y_pred_test=clf.predict(x_test_std)
 y_pred_train = clf.predict(x_train_std)
 
-print('-------')
-#Model evaluation for training data
-print("Accuracy for training data {Random Forest Classifier}:",accuracy_score(y_train, y_pred_train))
-print("Precision score for training{Random Forest classifier}:",precision_score(y_train, y_pred_train, average='micro'))
-print("Recall score for training{Random Forest classifier}:",recall_score(y_train, y_pred_train, average='weighted'))
-print("Precision score for training{Random Forest classifier}:",f1_score(y_train, y_pred_train, average='micro'))
-print(f"Runtime (Random Forest Classifier - training): {end - start}")
+# print('-------')
+# #Model evaluation for training data
+# print("Accuracy for training data {Random Forest Classifier}:",accuracy_score(y_train, y_pred_train))
+# print("Precision score for training{Random Forest classifier}:",precision_score(y_train, y_pred_train, average='micro'))
+# print("Recall score for training{Random Forest classifier}:",recall_score(y_train, y_pred_train, average='weighted'))
+# print("Precision score for training{Random Forest classifier}:",f1_score(y_train, y_pred_train, average='micro'))
+# print(f"Runtime (Random Forest Classifier - training): {end - start}")
 
 
 
-print('-------')
-#Model evaluation for testing data
-print("Accuracy for testing data{Random Forest Classifier}:",accuracy_score(y_test, y_pred_test))
-print("Precision score for testing data {Random Forest classifier}:",precision_score(y_test, y_pred_test, average='micro'))
-print("Recall score for testing data{Random Forest classifier}:",recall_score(y_test, y_pred_test, average='weighted'))
-print("Precision score for testing data{Random Forest classifier}:",f1_score(y_test, y_pred_test, average='micro'))
-print(f"Runtime (Random Forest Classifier - testing): {end - start}")
+# print('-------')
+# #Model evaluation for testing data
+# print("Accuracy for testing data{Random Forest Classifier}:",accuracy_score(y_test, y_pred_test))
+# print("Precision score for testing data {Random Forest classifier}:",precision_score(y_test, y_pred_test, average='micro'))
+# print("Recall score for testing data{Random Forest classifier}:",recall_score(y_test, y_pred_test, average='weighted'))
+# print("Precision score for testing data{Random Forest classifier}:",f1_score(y_test, y_pred_test, average='micro'))
+# print(f"Runtime (Random Forest Classifier - testing): {end - start}")
 
 
 report = classification_report(y_test, y_pred_test, output_dict=True, target_names=pd.unique(np.ravel(df[['Class']])))
@@ -193,57 +203,66 @@ for k in report:
     recalls_rfc.append(report[k]['recall'])
     f1s_rfc.append(report[k]['f1-score'])
 
+accuracies.append(accuracy_score(y_pred, y_pred_test))
+runtimes.append(end - start)
+
+print(precisions_decision)
 #https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
 X = np.arange(9)
-plt.bar(X + 0.00, precisions_linearsvm, color = 'r', width = 0.25)
-plt.bar(X + 0.25, precisions_kernelsvm, color = 'b', width = 0.25)
-plt.bar(X + 0.50, precisions_rfc, color = 'g', width = 0.25)
-plt.bar(X + 0.75, precisions_decision, color = 'y', width = 0.25)
+plt.bar(X - 0.30, precisions_linearsvm, color = 'r', align='edge', width = 0.15)
+plt.bar(X - 0.15, precisions_kernelsvm, color = 'b', align='edge',width = 0.15)
+plt.bar(X + 0.00, precisions_rfc, color = 'g', align='edge',width = 0.15)
+plt.bar(X + 0.15, precisions_decision, color = 'y',align='edge', width = 0.15)
 plt.xticks(X, classes)
 plt.title('Report: Precision Scores')
 plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier', 'Decision Tree'])
 plt.ylabel('Classification Rate (%)')
 plt.xlabel('Class')
-rcParams['figure.figsize'] = 15, 15
+rcParams['figure.figsize'] = 20, 20
 plt.show()
 
 #https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
 X = np.arange(9)
-plt.bar(X + 0.00, recalls_linearsvm, color = 'r', width = 0.25)
-plt.bar(X + 0.25, recalls_kernelsvm, color = 'b', width = 0.25)
-plt.bar(X + 0.50, recalls_rfc, color = 'g', width = 0.25)
-plt.bar(X + 0.75, recalls_decision, color = 'y', width = 0.25)
+plt.bar(X - 0.30, recalls_linearsvm, color = 'r', align='edge', width = 0.15)
+plt.bar(X - 0.15, recalls_kernelsvm, color = 'b', align='edge',width = 0.15)
+plt.bar(X + 0.00, recalls_rfc, color = 'g', align='edge',width = 0.15)
+plt.bar(X + 0.15, recalls_decision, color = 'y',align='edge', width = 0.15)
 plt.xticks(X, classes)
 plt.title('Report: Recall Scores')
 plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier', 'Decision Tree'])
 plt.ylabel('Classification Rate (%)')
 plt.xlabel('Class')
-rcParams['figure.figsize'] = 15, 15
+rcParams['figure.figsize'] = 20, 20
 plt.show()
 
 #https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
 X = np.arange(9)
-plt.bar(X + 0.00, f1s_linearsvm, color = 'r', width = 0.25)
-plt.bar(X + 0.25, f1s_kernelsvm, color = 'b', width = 0.25)
-plt.bar(X + 0.50, f1s_rfc, color = 'g', width = 0.25)
-plt.bar(X + 0.75, f1s_decision, color = 'y', width = 0.25)
+plt.bar(X - 0.30, f1s_linearsvm, color = 'r', align='edge', width = 0.15)
+plt.bar(X - 0.15, f1s_kernelsvm, color = 'b', align='edge',width = 0.15)
+plt.bar(X + 0.00, f1s_rfc, color = 'g', align='edge',width = 0.15)
+plt.bar(X + 0.15, f1s_decision, color = 'y',align='edge', width = 0.15)
 plt.xticks(X, classes)
 plt.title('Report: F1 Scores')
 plt.legend(labels=['Linear SVM', 'Kernel SVM', 'RandomForestClassifier', 'Decision Tree'])
 plt.ylabel('Classification Rate (%)')
 plt.xlabel('Class')
-rcParams['figure.figsize'] = 15, 15
+rcParams['figure.figsize'] = 20, 20
 plt.show()
 
-# Classification report fraph for decision tree
-X = np.arange(9)
-plt.bar(X + 0.00, precisions_decision, color = 'r', width = 0.25)
-plt.bar(X + 0.25, recalls_decision, color = 'b', width = 0.25)
-plt.bar(X + 0.50, f1s_decision, color = 'g', width = 0.25)
-plt.xticks(X, classes)
-plt.title('Classification Report: Decision Tree')
-plt.legend(labels=['precision', 'recall','f1_score'])
-plt.ylabel('Classification Rate (%)')
-plt.xlabel('Class (Decision Tree)')
-rcParams['figure.figsize'] = 15, 15
+#https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
+X = np.arange(4)
+plt.bar(X, accuracies, width = 0.25)
+plt.xticks(X, ['Linear SVM', 'Kernel SVM', 'Decision Tree', 'RandomForestClassifier'])
+plt.ylabel('Accuracy')
+plt.xlabel('Classifier Type')
+rcParams['figure.figsize'] = 20, 20
+plt.show()
+
+#https://www.tutorialspoint.com/matplotlib/matplotlib_bar_plot.htm
+X = np.arange(4)
+plt.bar(X, runtimes, width = 0.25)
+plt.xticks(X, ['Linear SVM', 'Kernel SVM', 'Decision Tree', 'RandomForestClassifier'])
+plt.ylabel('Runtime')
+plt.xlabel('Classifier Type')
+rcParams['figure.figsize'] = 20, 20
 plt.show()
