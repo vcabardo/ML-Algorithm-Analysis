@@ -16,6 +16,7 @@ The purpose of this project is to evaluate which machine learning technique woul
 This project contains multiple files:
 
 1. classification.py - Implements multiple sklearn classifiers and obtains certain performance metrics on them (accuracy, precision, recall, f1, and runtime)
+2. Dry_Bean_Dataset.csv - The dataset itself. The struture of the dataset is explained below.
 
 This project is structured as follows:
 ```bash
@@ -52,7 +53,7 @@ Attribute Information:
 17. Class (Seker, Barbunya, Bombay, Cali, Dermosan, Horoz and Sira)
 
 ## Running the Project
-#### Run the following command to view performance metrics and analyses of various machine learning algorithms on this dataset:
+#### Navigate to the directory containing classification.py and run the following command to view performance metrics and analyses of various machine learning algorithms on this dataset:
 - Linear SVM
 - Kernel SVM
 - Decision Tree
