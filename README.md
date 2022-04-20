@@ -16,7 +16,6 @@ The purpose of this project is to evaluate which machine learning technique woul
 This project contains multiple files:
 
 1. classification.py - Implements multiple sklearn classifiers and obtains certain performance metrics on them (accuracy, precision, recall, f1, and runtime)
-2. validation_curves.py - Used to assist in hyperparameter tuning for the machine learning models that are implemented in classification.py
 
 This project is structured as follows:
 ```bash
@@ -24,7 +23,6 @@ This project is structured as follows:
 ├── Dry_Bean_Dataset.csv
 ├── README.md
 ├── classification.py
-└── validation_curves.py
 ```
 
 ## Dataset
@@ -62,10 +60,4 @@ Attribute Information:
 
 ```bash
 python3 classification.py
-```
-
-#### Run the following command to view the validation curves generated for the above machine learning models and analyses of various machine learning algorithms on this dataset:
-
-```bash
-python3 validation_curves.py
 ```
