@@ -1,0 +1,32 @@
+CS 487
+Vensan Cabardo
+Likhitha Devineni
+Camika Leiva
+team.txt
+
+All of us decided on which dataset we should use, the Dry Bean Dataset. Vensan Cabardo worked on the SVM classifiers,
+with Camika Leiva working on the Decision Tree classifier and Likhitha Devineni implementing the Random Forest
+classifier. As for how we implemented the classifiers, each of us fitted, trained and tested, and reported the metrics
+of the classifiers -both through standard output and bar graphs.
+
+Vensan Cabardo set up the skeleton for graphing the data of each classifier's metric with each dry bean species class,
+and the rest filled in the information needed. Vensan Cabardo also cleaned up the code before submitting the finalized
+code.
+
+Regarding the report and who did which section:
+	* Motivation was done by Vensan Cabardo and Camika Leiva.
+	* Problem Statement was a team effort.
+	* Dataset was decided as a team.
+	* Proposed Solution was reported as a team.
+	* Methodology was discussed and implemented as a team.
+	* Results was written by Vensan Cabardo.
+	* Dicussion was completed by Camika Leiva.
+	* Conclusion was summarized by Likhitha Devineni.
+	* Citations by Camika Leiva
+	* Appendix by Vensan Cabardo and Likhitha Devineni.
+The report was proofread and cleaned up by Camika Leiva, with triple checks being conducted by the rest of the team.
+
+The leader role was held dutifully by Vensan Cabardo, who organized the meetings and planned each course of action 
+for each stage of the project. All members communicated often and finished their respective parts of the project 
+within the deadlines of each project stage. The team project was completed through GitHub, which allowed us to
+share and update files whenever needed.
